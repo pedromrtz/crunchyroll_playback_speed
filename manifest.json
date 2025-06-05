@@ -1,0 +1,28 @@
+{
+    "name": "Crunchyroll Speed Controller",
+    "version": "1.0.0",
+    "description": "Extension to change Crunchyroll's video playback speed.",
+    "manifest_version": 3,
+    "background": {
+        "service_worker": "background.js"
+    },
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "Crunchyroll Speed Controller",
+        "default_icon": "icon.png"
+    },
+    "permissions": [
+        "tabs"
+    ],
+    "host_permissions": [
+        "https://*.crunchyroll.com/*"
+    ],
+    "content_scripts": [
+        {
+            "matches": ["https://*.crunchyroll.com/*"],
+            "run_at": "document_end",
+            "all_frames": true,
+            "js": ["playback.js"]
+        }
+    ]
+}

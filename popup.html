@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Speed Controls</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: #18181b;
+            color: #f4f4f5;
+            font-family: system-ui, Arial, sans-serif;
+            margin: 0;
+            padding: 24px 18px;
+            min-width: 260px;
+        }
+        h2 {
+            font-size: 1.2rem;
+            margin-bottom: 18px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .controls-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .control {
+            background: #23232a;
+            border-radius: 8px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+            cursor: pointer;
+        }
+        .shortcut {
+            background: #27272f;
+            color: rgb(255, 167, 53);
+            font-weight: 500;
+            border-radius: 5px;
+            padding: 4px 10px;
+            margin-right: 14px;
+            font-size: 0.98em;
+            letter-spacing: 0.5px;
+            min-width: 90px;
+            text-align: center;
+        }
+        .desc {
+            font-size: 0.98em;
+            color: #e4e4e7;
+        }
+    </style>
+</head>
+<body>
+    <h2>Quick Controls</h2>
+    <div class="controls-list">
+        <div class="control">
+            <span class="shortcut">Shift + ↑</span>
+            <span class="desc">Increase speed</span>
+        </div>
+        <div class="control">
+            <span class="shortcut">Shift + ↓</span>
+            <span class="desc">Decrease speed</span>
+        </div>
+        <div class="control">
+            <span class="shortcut">Shift + R</span>
+            <span class="desc">Reset speed</span>
+        </div>
+        <div class="control">
+            <span class="shortcut">Space</span>
+            <span class="desc">Hold to play at x2 speed</span>
+        </div>
+    </div>
+</body>
+</html>
