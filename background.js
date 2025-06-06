@@ -1,14 +1,30 @@
+/**
+ * BACKGROUND SCRIPT: ICON VISIBILITY CONTROL
+ *
+ * Features:
+ * - Logs installation event
+ * - Disables extension icon by default
+ * - Enables icon only on Crunchyroll tabs
+ */
+
+// Event: Extension installed
 chrome.runtime.onInstalled.addListener(() => {
     console.log("Crunchyroll Speed Controller installed");
-    chrome.action.disable(); // Desactiva el ícono por defecto
+
+    // Disable extension icon by default
+    chrome.action.disable();
 });
 
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (changeInfo.status === "complete" && tab.url) {
+// Event: Tab updated (URL change, loading complete, etc.)
+chrome.tabs.onUpdated.addListener((tab_id, change_info, tab) => {
+    // Only act when the page has fully loaded
+    if (change_info.status === "complete" && tab.url) {
+        // Enable icon only if tab is Crunchyroll
         if (tab.url.includes("crunchyroll.com")) {
-            chrome.action.enable(tabId); // Activa ícono en Crunchyroll
+            chrome.action.enable(tab_id);
         } else {
-            chrome.action.disable(tabId); // Lo desactiva en otros sitios
+            // Disable icon on non-Crunchyroll sites
+            chrome.action.disable(tab_id);
         }
     }
 });
