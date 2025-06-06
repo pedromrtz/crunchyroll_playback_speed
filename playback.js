@@ -133,6 +133,18 @@ const show_playback_rate_value = (video_player, playback_rate, persistent = fals
             animation_timeout = setTimeout(start_fadeout, 500);
         }
     });
+
+    // Ensure the indicator is shown above fullscreen elements
+    speed_indicator.style.setProperty('position', 'fixed', 'important');
+    speed_indicator.style.setProperty('z-index', '2147483647', 'important');
+
+    // Add fullscreen-aware positioning
+    const fullscreen_element = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+    if (fullscreen_element) {
+        fullscreen_element.appendChild(speed_indicator); // attach to the video container in fullscreen
+    } else {
+        document.body.appendChild(speed_indicator); // default
+    }
 };
 
 /**
