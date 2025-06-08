@@ -22,6 +22,49 @@ let was_playing = false;
 let speed_indicator = null;
 
 /**
+ * HOLD SPEED CONFIGURATION
+ * hold_speed_key: Storage key for configurable hold speed
+ * default_hold_speed: Default speed when holding spacebar
+ */
+const HOLD_SPEED_KEY = 'crunchyroll_hold_speed';
+const DEFAULT_HOLD_SPEED = '2.0';
+
+/**
+ * Get hold_speed from localStorage
+ * @returns {number} Hold speed value
+ */
+const get_hold_speed_from_storage = () => {
+    const stored_speed = localStorage.getItem(HOLD_SPEED_KEY);
+    return stored_speed ? parseFloat(stored_speed) : parseFloat(DEFAULT_HOLD_SPEED);
+};
+
+/**
+ * Save hold_speed to localStorage
+ * @param {string|number} hold_speed - Speed value to save
+ */
+const save_hold_speed_to_storage = (hold_speed) => {
+    localStorage.setItem(HOLD_SPEED_KEY, hold_speed.toString());
+};
+
+/**
+ * Message listener for communication with popup
+ * Handles get/set operations for hold_speed configuration
+ */
+chrome.runtime.onMessage.addListener((message, sender, send_response) => {
+    if (message.action === 'get_hold_speed') {
+        const hold_speed = get_hold_speed_from_storage();
+        send_response({ hold_speed: hold_speed.toString() });
+        return true; // Keep message channel open for async response
+    }
+    
+    if (message.action === 'set_hold_speed') {
+        save_hold_speed_to_storage(message.hold_speed);
+        send_response({ success: true });
+        return true; // Keep message channel open for async response
+    }
+});
+
+/**
  * Ensures playback rate stays within reasonable bounds
  * @param {number} playback_rate - Desired playback rate
  * @returns {number} Clamped playback rate between 0.0 and 2.0
@@ -183,12 +226,13 @@ document.addEventListener('keydown', (e) => {
             // Set timeout to detect spacebar hold (500ms threshold)
             space_held_timeout = setTimeout(() => {
                 was_playing = !video.paused;
-                video.playbackRate = 2.0;
+                const current_hold_speed = get_hold_speed_from_storage();
+                video.playbackRate = current_hold_speed;
                 if (video.paused) video.play();
                 
                 // Show persistent indicator while holding space
                 if (!speed_indicator) {
-                    show_playback_rate_value(video, 2.0, true);
+                    show_playback_rate_value(video, current_hold_speed, true);
                 }
             }, 500);
         }
